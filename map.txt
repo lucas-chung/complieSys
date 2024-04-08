@@ -1,0 +1,53 @@
+ent  #size   	push {fp,lr}	
+		add fp,sp,#4
+		sub sp,sp,#size
+
+ret varName|#value	mov r0,variable|value
+			sub sp,fp,#4
+			pop {fp,pc}
+
+mov varName1，#value|varName2	/*给某个变量传值*/
+				mov rx1,[fp,#offset]	/*如果varName2不在寄存器中*/
+				mov rx1,#value|rx2 /*如果varName2为常数或者在寄存器中*/
+
+init varName1,#value|varName2	mov rx,#value  	/*init用来定义一个变量*/
+				or
+				mov rx,[fp,#offset] /*如果varName2不在寄存器中*/
+				or
+				mov rx1,rx2	/*如果varName2在寄存器中*/
+				
+				str rx1,[fp,#offset]	/*保存varName1到栈*/
+
+str  varName	str rx，[fp，#offset] /*将寄存器的值压栈，x为寄存器下标*/
+
+ldr varName	ldr rx，[fp，#offset] /*将栈内某个值传给寄存器，x为寄存器下标*/
+
+bl address	bl address /*跳转指令*/
+
+add varName1, varName2|#value , varName3|#value		add rx1，rx2|#value，rx3|#value
+
+sub varName1, varName2|#value , varName3|#value		sub rx1，rx2|#value，rx3|#value
+
+mul varName1, varName2|#value , varName3|#value		mul rx1，rx2|#value，rx3|#value		
+
+div varName1, varName2|#value , varName3|#value		mov rx , #value  （arm中无除法指令，要特殊处理，value为运算结果）
+
+mod varName1, varName2|#value , varName3|#value		mov rx , #value  （arm中无取余指令，要特殊处理，value为运算结果）
+
+and varName1, varName2|#value , varName3|#value		and rx1，rx2|#value，rx3|#value
+
+orr varName1, varName2|#value , varName3|#value		orr rx1，rx2|#value，rx3|#value
+
+not varName1,varName2					mov rx,#value （arm中无非指令，要特殊处理，value为运算结果）
+
+cmp varName1 , varName2 | number		ldr rx1,#offset		
+					ldr rx2,#offset	/*如果操作数不在寄存器中*/
+					cmp rx1 , rx2 | #number   /*第一操作数可以为寄存器或者常数*/ 
+		
+bxx label		bxx label /*xx为跳转条件*/
+
+ITE
+
+movxx varName1，#0|#1	movxx rx，#0|#1		/*对于比较指令的翻译*/
+
+	
